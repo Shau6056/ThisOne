@@ -42,6 +42,27 @@ public class NoteAPI {
         return false;
     }
 
+    public boolean deleteItemFromNote(int index) {
+
+        if (isValidIndex(index)) {
+            notes.get(index).deleteItem(index);
+            return true;
+
+        }
+        return false;
+    }
+
+    public boolean updateItemDescriptionInNote(int indexIn, String descriptionIn, boolean statusIn )
+    {
+        if(isValidIndex(indexIn)){
+            notes.get(indexIn).updateItem(indexIn,descriptionIn, statusIn);
+            return true;
+        }
+
+        return false;
+
+    }
+
     public Note deleteNote(int indexToDelete) {
         if (isValidIndex(indexToDelete)) {
             return notes.remove(indexToDelete);
@@ -49,10 +70,20 @@ public class NoteAPI {
         return null;
     }
     public boolean archiveNote(int indexToArchive) {
-        Note noteCheck = findNote(indexToArchive);
 
-        if (isValidIndex(indexToArchive)) {
+        Note noteCheck = findNote(indexToArchive);
+        if(noteCheck == null){
+            return false;
+        }
+        for(Item item: noteCheck.getItems()){
+            if(!item.isItemCompleted()){
+                return false;
+            }
+        }
+        System.out.println("NOTE + " + noteCheck);
+        if (isValidIndex(indexToArchive) && !noteCheck.isNoteArchived()) {
             noteCheck.setNoteArchived(true);
+            System.out.println("true");
             return true;
         } else {
             return false;
@@ -329,6 +360,7 @@ public String listTodoItems()
                         getItem += i + ": " + notes.get(i).searchItemByDescription(description);
                     }
                 }
+
                 return getItem;
             }
         }

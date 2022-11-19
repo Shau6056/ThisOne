@@ -416,6 +416,7 @@ public class NoteAPITest {
             assertEquals(6, notes.numberOfTodoItems());
 
             String todoItems = notes.listTodoItems().toLowerCase();
+            System.out.println(todoItems);
 
             //javaWork object (two to do items)
             assertTrue(todoItems.contains("learning java"));

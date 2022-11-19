@@ -78,7 +78,21 @@ public class Driver {
                 case 4 -> deleteNote();
                 case 5 -> archiveNote();
                 case 6 -> addItemToNote();
+                case 7 -> updateItemDescInNote();
+                case 8 -> deleteItemFromNote();
+                //case 9 -> markCompletionOfItem();
                 case 10 -> printAllNotes();
+                case 11 -> archiveNotesWithAllItemsComplete();
+                case 12 -> printNotesBySelectedCategory();
+                //case 13 -> printNotesByPriority();
+                case 14 -> searchNotesByTitle();
+                case 15 -> printAllTodoItems();
+                //case 16 -> printOverallItemsTodoCompleted();
+                //case 17 -> printITemCompletionStatusByCategory();
+                //case 18 -> searchItemsByDescription();
+                //case 20 -> Save();
+                //case 21 -> Load();
+                //case 0 -> Exit();
                 default -> System.out.println("Not a valid option " + option);
 
             }
@@ -235,19 +249,55 @@ public class Driver {
 
         }
     }
+
     public void updateItemDescInNote() {// ask about this if you have a chance.
         System.out.println(noteAPI.listActiveNotes());
 
         int index = ScannerInput.readNextInt("Enter the index of an active note: ");
 
-        if (noteAPI.isValidIndex(index)) {
+        if (noteAPI.isValidIndex(index) && noteAPI.numberOfItems()>0)
+        {
+            int indexTwo = ScannerInput.readNextInt("Enter the index of an active item: ");
+            String description = ScannerInput.readNextLine("Enter in a new Item description: ");
+            boolean didItWork = noteAPI.updateItemDescriptionInNote(indexTwo, description, true);
 
+            if(didItWork)
+            {
+                System.out.println("Update was successful");
+            }
+            else if(!didItWork)
+            {
+                System.out.println("Update was NOT unsuccessful");
+            }
+
+            else{
+                System.out.println("There was no Note for this index " + index);
+            }
         }
     }
 
     public void deleteItemFromNote()
     {
+        System.out.println(noteAPI.listActiveNotes());
 
+        int index = ScannerInput.readNextInt("Select index of active note: ");
+
+        if(noteAPI.isValidIndex(index))
+        {
+            int description = ScannerInput.readNextInt("What is the item index you want to delete: ");
+
+            boolean didWork = noteAPI.deleteItemFromNote(index);
+
+            if(didWork == true)
+            {
+                System.out.println("Item deleted successfully");
+            }
+            else
+            {
+                System.out.println("Unsuccessful");
+            }
+
+        }
     }
 
     public void printAllNotes()
